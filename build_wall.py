@@ -329,9 +329,12 @@ function render() {
 }
 function renderInsights() {
   ins.innerHTML = `
-    <h2>Most played — last 12 months</h2><div class="note smallcaps">${esc(STATS.range)}</div>
+    <h2>All-time most played artists</h2><div class="note smallcaps">${esc(STATS.range)}</div>
     <table><tr><th>#</th><th>Artist</th><th>Plays</th><th>Hours</th></tr>
     ${STATS.top_played.map((t,i)=>`<tr><td>${i+1}</td><td>${esc(t[0])}</td><td>${t[1]}</td><td>${t[2]}</td></tr>`).join('')}</table>
+    <h2>All-time most played songs</h2><div class="note smallcaps">${esc(STATS.range)}</div>
+    <table><tr><th>#</th><th>Track</th><th>Artist</th><th>Plays</th><th>Hours</th></tr>
+    ${STATS.top_songs.map((t,i)=>`<tr><td>${i+1}</td><td>${esc(t[0])}</td><td>${esc(t[1])}</td><td>${t[2]}</td><td>${t[3]}</td></tr>`).join('')}</table>
     <h2>Most liked</h2>
     <table><tr><th>#</th><th>Artist</th><th>Liked tracks</th></tr>
     ${STATS.top_liked.map((t,i)=>`<tr><td>${i+1}</td><td>${esc(t[0])}</td><td>${t[1]}</td></tr>`).join('')}</table>`;
@@ -371,13 +374,33 @@ fillSorts(); render();
 </html>
 """
 
+# all-time track stats straight from the streaming history export
+SRC = Path("/Users/emotebot/.hermes/cache/documents/spotify_export/Spotify Account Data")
+track_plays, track_ms, track_meta = {}, {}, {}
+hist_ts = []
+if SRC.exists():
+    from collections import defaultdict
+    track_plays, track_ms = defaultdict(int), defaultdict(int)
+    for f in sorted(SRC.glob("StreamingHistory_music_*.json")):
+        for h in json.load(open(f)):
+            an, tn = h.get("artistName") or "", h.get("trackName") or ""
+            k = (an, tn)
+            track_plays[k] += 1
+            track_ms[k] += h.get("msPlayed", 0)
+            hist_ts.append(h.get("endTime", ""))
+hist_ts.sort()
+range_note = (f"{hist_ts[0][:10]} → {hist_ts[-1][:10]} · standard export (12 mo) — request Spotify's "
+              f"extended streaming history for true lifetime stats") if hist_ts else "from streaming history"
+
 stats = {
     "albums": len(albums), "artists": len(artists),
     "liked": sum(1 for _ in open(DATA / "liked_tracks.csv")) - 1,
     "hours": round(sum(a["hours"] for a in artists), 1),
-    "range": "from streaming history",
+    "range": range_note,
     "top_played": [[a["name"], a["plays"], a["hours"]] for a in
-                   sorted(artists, key=lambda x: -x["plays"])[:10]],
+                   sorted(artists, key=lambda x: -x["plays"])[:20]],
+    "top_songs": [[tn, an, track_plays[(an, tn)], round(track_ms[(an, tn)] / 3.6e6, 1)]
+                  for (an, tn) in sorted(track_plays, key=lambda k: -track_plays[k])[:25]],
     "top_liked": [[a["name"], a["liked_tracks"]] for a in
                   sorted(artists, key=lambda x: -x["liked_tracks"])[:10]],
 }
