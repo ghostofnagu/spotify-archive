@@ -33,7 +33,7 @@ h1 em { font-style: normal; color: var(--dim); }
   #themeBtn { top: 46px; right: 22px; }
 }
 
-/* hero: original perspective stream — adapted for the archive's own artwork */
+/* hero: perspective corridor driven by the supplied ImageStreamHero geometry */
 .hero { position: relative; isolation: isolate; min-height: min(640px, 58vw); margin: 22px 0 8px; overflow: hidden;
   background: var(--panel); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .hero::before { content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
@@ -41,21 +41,21 @@ h1 em { font-style: normal; color: var(--dim); }
 .hero-copy { position: relative; z-index: 3; width: min(520px, calc(100% - 48px)); margin: 0 auto; padding-top: clamp(54px, 8vw, 102px); text-align: center; pointer-events: none; }
 .hero-copy h2 { max-width: 500px; margin: 8px auto 0; color: var(--ink); font-size: clamp(40px, 5.8vw, 78px); line-height: .91; letter-spacing: -.065em; }
 .hero-copy p:last-child { max-width: 300px; margin: 18px auto 0; color: var(--dim); font-size: 13px; line-height: 1.38; }
-.hero-stage { position:absolute; z-index:1; inset:0; container-type: inline-size; perspective: 1100px; }
-.stream-card { position:absolute; left:50%; top:57%; width:clamp(68px, 16cqw, 220px); aspect-ratio:1; overflow:hidden; border-radius:3px; background:var(--line);
-  transform-origin:center center; box-shadow:0 20px 38px var(--shadow2), 0 4px 11px var(--shadow); will-change:transform,opacity; }
+.hero-stage { position:absolute; z-index:1; inset:0; container-type: inline-size; perspective:30cqw; perspective-origin:50% 55%; pointer-events:none; }
+.hero-stage > div { position:absolute; inset:0; transform-style:preserve-3d; }
+.stream-card { position:absolute; left:50%; top:55%; width:18cqw; height:25cqw; margin-left:-9cqw; margin-top:-12.5cqw; overflow:hidden;
+  border-radius:.4cqw; background:var(--line); box-shadow:0 20px 38px var(--shadow2), 0 4px 11px var(--shadow); backface-visibility:hidden; will-change:transform; }
 .stream-card::before { content:""; position:absolute; z-index:2; inset:0; pointer-events:none;
   background:linear-gradient(108deg,var(--gloss) 0%,rgba(255,255,255,.05) 22%,transparent 43%),linear-gradient(to right,rgba(0,0,0,.33),transparent 5px); }
 .stream-card img { width:100%; height:100%; display:block; object-fit:cover; }
-@media (hover:hover) { .hero:hover .stream-card { animation-play-state:paused; } }
+.hero:hover .stream-card { animation-play-state:paused; }
 @media (max-width:700px) {
   .hero { min-height: 610px; }
   .hero-copy { padding-top: 48px; width: min(340px, calc(100% - 32px)); }
   .hero-copy h2 { font-size: clamp(42px, 13vw, 62px); }
   .hero-copy p:last-child { margin-top: 15px; }
-  .stream-card { top:63%; width:clamp(56px, 23cqw, 130px); }
 }
-@media (prefers-reduced-motion: reduce) { .stream-card { transition:none !important; } }
+@media (prefers-reduced-motion: reduce) { .stream-card { animation-play-state:paused !important; } }
 
 nav { position: sticky; top: 0; z-index: 10; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
   padding: 12px 40px; background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(12px);
@@ -183,43 +183,43 @@ themeBtn.onclick = () => setTheme(rootEl.dataset.theme === 'dark' ? 'light' : 'd
 document.getElementById('meta').innerHTML =
   `<span>${STATS.albums} albums</span><span>${STATS.artists} artists</span><span>${STATS.liked} liked tracks</span><span>${STATS.hours} h / last 12 mo</span>`;
 
-// hero: two perspective rails of the archive's own artwork
+// hero: exact corridor geometry from the supplied ImageStreamHero, applied to archive artwork
 const heroItems = ALBUMS.filter(a => a.art).sort((a,b) => b.lt - a.lt).slice(0, 36);
 const hero = document.getElementById('hero');
-const streamCards = [];
-const streamCount = Math.min(18, heroItems.length);
-for (const side of [-1, 1]) {
-  for (let i = 0; i < streamCount; i++) {
-    const album = heroItems[(i * 3 + (side === 1 ? 5 : 0)) % heroItems.length];
+const PATH = { perspective:30, cardWidth:18, cardHeight:25, cardRadius:.4, birthHeight:2.6, exitHeight:46, railBirth:-11, railExit:44, fan:3.3, turnBirth:6, turnExit:28, stops:24 };
+const streamCards = 9;
+const streamSpeed = 18;
+function corridorKeyframes(dir, name, p) {
+  const steps = [];
+  for (let s = 0; s <= p.stops; s++) {
+    const u = s / p.stops;
+    const scale = (p.birthHeight / p.cardHeight) * Math.pow(p.exitHeight / p.birthHeight, u);
+    const z = p.perspective * (1 - 1 / scale);
+    const rail = p.railExit - (p.railExit - p.railBirth) * Math.pow(1 - u, p.fan);
+    const turn = p.turnBirth + (p.turnExit - p.turnBirth) * u;
+    steps.push(`${(u * 100).toFixed(2)}%{transform:translate3d(${(dir * rail).toFixed(2)}cqw,0,${z.toFixed(2)}cqw) rotateY(${(-dir * turn).toFixed(2)}deg)}`);
+  }
+  return `@keyframes ${name}{${steps.join('')}}`;
+}
+const streamId = `shelf-${Math.random().toString(36).slice(2)}`;
+const streamRight = `shelf-right-${streamId}`;
+const streamLeft = `shelf-left-${streamId}`;
+const streamStyle = document.createElement('style');
+streamStyle.textContent = corridorKeyframes(1, streamRight, PATH) + corridorKeyframes(-1, streamLeft, PATH);
+document.head.appendChild(streamStyle);
+const streamPlane = document.createElement('div');
+for (const name of [streamRight, streamLeft]) {
+  for (let i = 0; i < streamCards; i++) {
+    const album = heroItems[i % heroItems.length];
     const el = document.createElement('div');
     el.className = 'stream-card';
+    el.style.animation = `${name} ${streamSpeed}s linear infinite`;
+    el.style.animationDelay = `${-(i * streamSpeed) / streamCards}s`;
     el.innerHTML = `<img loading="eager" src="${album.art}" alt="">`;
-    hero.appendChild(el);
-    streamCards.push({ el, side, phase: i / streamCount });
+    streamPlane.appendChild(el);
   }
 }
-let streamPaused = false;
-const reducedStream = window.matchMedia('(prefers-reduced-motion: reduce)');
-function renderStream(now = 0) {
-  const progress = reducedStream.matches ? 0 : (now / 46000) % 1;
-  streamCards.forEach(({el, side, phase}) => {
-    const t = (phase + progress) % 1;
-    const near = Math.pow(t, .72);
-    const x = side * (2 + Math.pow(t, 1.72) * 59);
-    const y = (1 - t) * 26 - 10;
-    const scale = .16 + near * 1.12;
-    const tilt = side * (1 - t) * 17;
-    const opacity = Math.min(1, t * 7, (1 - t) * 8);
-    el.style.transform = `translate(-50%, -50%) translate3d(${x}cqw, ${y}px, 0) scale(${scale}) rotateY(${tilt}deg)`;
-    el.style.opacity = opacity.toFixed(3);
-    el.style.zIndex = String(Math.round(t * 100));
-  });
-  if (!reducedStream.matches && !streamPaused) requestAnimationFrame(renderStream);
-}
-hero.addEventListener('pointerenter', () => { streamPaused = true; });
-hero.addEventListener('pointerleave', () => { if (streamPaused) { streamPaused = false; requestAnimationFrame(renderStream); } });
-reducedStream.addEventListener?.('change', () => requestAnimationFrame(renderStream));
-requestAnimationFrame(renderStream);
+hero.appendChild(streamPlane);
 
 // ---- audio ----
 const audio = new Audio(); audio.preload = 'none';
