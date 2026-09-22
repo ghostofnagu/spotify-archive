@@ -58,13 +58,13 @@ body { background: var(--bg); color: var(--ink); transition: background .4s, col
 .hero-copy { position: relative; z-index: 3; width: min(520px, calc(100% - 48px)); margin: 0 auto; padding-top: clamp(54px, 8vw, 102px); text-align: center; pointer-events: none; }
 .hero-copy h2 { max-width: 500px; margin: 8px auto 0; color: var(--ink); font-size: clamp(40px, 5.8vw, 78px); line-height: .91; letter-spacing: -.065em; }
 .hero-copy p:last-child { max-width: 300px; margin: 18px auto 0; color: var(--dim); font-size: 13px; line-height: 1.38; }
-.hero-stage { position:absolute; z-index:1; inset:0; container-type: inline-size; perspective:30cqw; perspective-origin:50% 55%; pointer-events:none; }
+.hero-stage { position:absolute; z-index:1; inset:0; overflow:hidden; container-type: inline-size; perspective:30cqw; perspective-origin:50% 55%; pointer-events:none; transform:translateZ(0); }
 .hero-stage > div { position:absolute; inset:0; transform-style:preserve-3d; }
 .stream-card { position:absolute; left:50%; top:55%; width:18cqw; height:25cqw; margin-left:-9cqw; margin-top:-12.5cqw; overflow:hidden;
-  border-radius:.4cqw; background:var(--line); box-shadow:0 20px 38px var(--shadow2), 0 4px 11px var(--shadow); backface-visibility:hidden; will-change:transform; }
+  border-radius:.4cqw; background:var(--line); box-shadow:none; outline:1px solid color-mix(in srgb, var(--ink) 10%, transparent); backface-visibility:hidden; transform-style:preserve-3d; contain:paint; will-change:transform; }
 .stream-card::before { content:""; position:absolute; z-index:2; inset:0; pointer-events:none;
-  background:linear-gradient(108deg,var(--gloss) 0%,rgba(255,255,255,.05) 22%,transparent 43%),linear-gradient(to right,rgba(0,0,0,.33),transparent 5px); }
-.stream-card img { width:100%; height:100%; display:block; object-fit:cover; }
+  background:linear-gradient(108deg,var(--gloss) 0%,rgba(255,255,255,.05) 22%,transparent 43%),linear-gradient(to right,rgba(0,0,0,.20),transparent 4px); }
+.stream-card img { width:100%; height:100%; display:block; object-fit:cover; transform:translateZ(0); backface-visibility:hidden; }
 .hero:hover .stream-card { animation-play-state:paused; }
 @media (max-width:700px) {
   .hero { min-height: 610px; }
