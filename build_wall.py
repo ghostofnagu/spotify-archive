@@ -171,7 +171,7 @@ footer.archive-footer { padding:clamp(48px,8vw,112px) 40px 42px; border-top:1px 
 <section class="hero" aria-label="A moving stream of album artwork">
   <div class="hero-copy">
     <div class="smallcaps">Every album, within reach</div>
-    <h2>A life in records.</h2>
+    <h2>A life in record.</h2>
     <p>The music that stayed with you, streaming through one personal shelf.</p>
   </div>
   <div class="hero-stage" id="hero" aria-hidden="true"></div>
