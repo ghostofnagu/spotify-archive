@@ -38,49 +38,39 @@ TEMPLATE = r"""<!DOCTYPE html>
   --acc:#1db954; --chip:#1c1c21; --gloss:rgba(255,255,255,.14); --shadow:rgba(0,0,0,.5); --shadow2:rgba(0,0,0,.7); }
 * { box-sizing: border-box; margin: 0; }
 html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 body { background: var(--bg); color: var(--ink); transition: background .4s, color .4s;
   font: 14px/1.45 "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
 .smallcaps { font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); }
 
-header { padding: 52px 40px 20px; position: relative; }
-h1 { font-size: clamp(34px, 5vw, 56px); letter-spacing: -0.04em; font-weight: 700; line-height: .95; }
-h1 em { font-style: normal; color: var(--dim); }
-.meta { margin-top: 10px; display: flex; gap: 26px; flex-wrap: wrap; }
-#themeBtn { position: absolute; top: 52px; right: 40px; background: var(--panel); border: 1px solid var(--line);
-  color: var(--ink); border-radius: 999px; width: 42px; height: 42px; font-size: 17px; cursor: pointer;
-  transition: transform .3s; }
-#themeBtn:hover { transform: rotate(40deg) scale(1.1); }
-@media (max-width:700px) {
-  header { padding: 38px 78px 20px 22px; }
-  h1 { font-size: 42px; line-height: .9; }
-  h1 em { display: block; margin-top: 5px; font-size: .68em; letter-spacing: -.035em; }
-  .meta { gap: 14px 22px; margin-top: 14px; }
-  #themeBtn { top: 46px; right: 22px; }
-}
+#themeBtn { position:fixed; top:28px; right:32px; z-index:30; background:color-mix(in srgb, var(--panel) 88%, transparent); border:1px solid var(--line);
+  color:var(--ink); border-radius:999px; width:46px; height:46px; font-size:18px; cursor:pointer; backdrop-filter:blur(12px);
+  transition:transform .3s, background .3s, border-color .3s; }
+#themeBtn:hover { transform:rotate(40deg) scale(1.08); border-color:var(--acc); }
+#themeBtn:focus-visible,.hero-enter:focus-visible { outline:2px solid var(--acc); outline-offset:4px; }
+@media (max-width:700px) { #themeBtn { top:18px; right:18px; width:44px; height:44px; } }
 
-/* hero: perspective corridor driven by the supplied ImageStreamHero geometry */
-.hero { position: relative; isolation: isolate; min-height: min(640px, 58vw); margin: 22px 0 8px; overflow: hidden;
-  background: var(--panel); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+/* hero: the archive begins before any interface */
+.hero { position:relative; isolation:isolate; min-height:min(760px,100svh); margin:0; overflow:hidden;
+  background:var(--panel); border-bottom:1px solid var(--line); }
 .hero::before { content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
-  background: radial-gradient(ellipse 52% 54% at 50% 51%, transparent 0 45%, color-mix(in srgb, var(--bg) 54%, transparent) 100%); }
-.hero-copy { position: relative; z-index: 3; width: min(520px, calc(100% - 48px)); margin: 0 auto; padding-top: clamp(54px, 8vw, 102px); text-align: center; pointer-events: none; }
-.hero-copy h2 { max-width: 500px; margin: 8px auto 0; color: var(--ink); font-size: clamp(40px, 5.8vw, 78px); line-height: .91; letter-spacing: -.065em; }
-.hero-copy p:last-child { max-width: 300px; margin: 18px auto 0; color: var(--dim); font-size: 13px; line-height: 1.38; }
-.hero-stage { position:absolute; z-index:1; inset:0; container-type: inline-size; perspective:30cqw; perspective-origin:50% 55%; pointer-events:none; }
+  background:radial-gradient(ellipse 54% 58% at 50% 52%, transparent 0 42%, color-mix(in srgb,var(--bg) 68%,transparent) 100%); }
+.hero::after { content:""; position:absolute; z-index:2; left:0; right:0; bottom:0; height:24%; pointer-events:none;
+  background:linear-gradient(to top,var(--panel),transparent); }
+.hero-stage { position:absolute; z-index:1; inset:0; container-type:inline-size; perspective:30cqw; perspective-origin:50% 55%; pointer-events:none; }
 .hero-stage > div { position:absolute; inset:0; transform-style:preserve-3d; }
 .stream-card { position:absolute; left:50%; top:55%; width:18cqw; height:25cqw; margin-left:-9cqw; margin-top:-12.5cqw; overflow:hidden;
-  border-radius:.4cqw; background:var(--line); box-shadow:0 20px 38px var(--shadow2), 0 4px 11px var(--shadow); backface-visibility:hidden; will-change:transform; }
+  border-radius:.4cqw; background:var(--line); box-shadow:0 20px 38px var(--shadow2),0 4px 11px var(--shadow); backface-visibility:hidden; will-change:transform; }
 .stream-card::before { content:""; position:absolute; z-index:2; inset:0; pointer-events:none;
   background:linear-gradient(108deg,var(--gloss) 0%,rgba(255,255,255,.05) 22%,transparent 43%),linear-gradient(to right,rgba(0,0,0,.33),transparent 5px); }
 .stream-card img { width:100%; height:100%; display:block; object-fit:cover; }
 .hero:hover .stream-card { animation-play-state:paused; }
-@media (max-width:700px) {
-  .hero { min-height: 610px; }
-  .hero-copy { padding-top: 48px; width: min(340px, calc(100% - 32px)); }
-  .hero-copy h2 { font-size: clamp(42px, 13vw, 62px); }
-  .hero-copy p:last-child { margin-top: 15px; }
-}
-@media (prefers-reduced-motion: reduce) { .stream-card { animation-play-state:paused !important; } }
+.hero-enter { position:absolute; z-index:4; left:50%; bottom:34px; transform:translateX(-50%); display:inline-flex; align-items:center; gap:10px; padding:8px 12px;
+  border:0; background:transparent; color:var(--ink); font:10px/1 "Helvetica Neue",Helvetica,Arial,sans-serif; letter-spacing:.15em; text-transform:uppercase; cursor:pointer; }
+.hero-enter span { display:inline-grid; place-items:center; width:24px; height:24px; border:1px solid var(--line); border-radius:50%; font-size:15px; line-height:1; transition:transform .25s,background .25s; }
+.hero-enter:hover span { transform:translateY(4px); background:var(--ink); color:var(--panel); }
+@media (max-width:700px) { .hero { min-height:100svh; } .hero-enter { bottom:22px; } }
+@media (prefers-reduced-motion:reduce) { .stream-card { animation-play-state:paused !important; } }
 
 nav { position: sticky; top: 0; z-index: 10; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
   padding: 12px 40px; background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(12px);
@@ -158,26 +148,25 @@ table { border-collapse: collapse; width: 100%; }
 td, th { text-align:left; padding: 7px 12px 7px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
 th { font-size: 10px; letter-spacing:.12em; text-transform:uppercase; color:var(--dim); font-weight:400; }
 
-footer { padding: 22px 40px 44px; border-top: 1px solid var(--line); }
+footer.archive-footer { padding:clamp(48px,8vw,112px) 40px 42px; border-top:1px solid var(--line); background:var(--panel); min-height:52vh; display:flex; flex-direction:column; justify-content:space-between; }
+.archive-footer h1 { max-width:900px; margin-top:18px; font-size:clamp(54px,9vw,132px); letter-spacing:-.07em; font-weight:700; line-height:.84; }
+.archive-footer h1 em { display:block; margin-top:.12em; font-style:normal; color:var(--dim); font-size:.68em; letter-spacing:-.055em; }
+.archive-footer .meta { max-width:850px; margin-top:34px; display:flex; gap:20px 48px; flex-wrap:wrap; font-size:11px; }
+.footer-bottom { display:flex; justify-content:space-between; align-items:flex-end; gap:20px; margin-top:70px; border-top:1px solid var(--line); padding-top:17px; }
+.footer-bottom p { max-width:560px; }
+.footer-bottom a { color:var(--ink); text-decoration:none; border-bottom:1px solid var(--line); padding-bottom:3px; transition:border-color .2s,color .2s; }
+.footer-bottom a:hover { color:var(--acc); border-color:var(--acc); }
+@media (max-width:700px) { footer.archive-footer { padding:54px 22px 28px; min-height:60vh; } .archive-footer h1 { font-size:clamp(54px,17vw,78px); } .archive-footer .meta { gap:15px 25px; margin-top:30px; } .footer-bottom { margin-top:55px; align-items:flex-start; flex-direction:column; } }
 .hidden { display: none !important; }
 </style>
 </head>
-<body>
-<header>
-  <div class="smallcaps">Hriday Nagu’s listening archive</div>
-  <h1>The Shelf <em>— a music archive</em></h1>
-  <div class="meta smallcaps" id="meta"></div>
-  <button id="themeBtn" title="Toggle theme">☾</button>
-</header>
+<body id="top">
+<button id="themeBtn" title="Toggle theme" aria-label="Toggle dark mode">☾</button>
 <section class="hero" aria-label="A moving stream of album artwork">
-  <div class="hero-copy">
-    <div class="smallcaps">Every album, within reach</div>
-    <h2>A life in records.</h2>
-    <p>The music that stayed with you, streaming through one personal shelf.</p>
-  </div>
   <div class="hero-stage" id="hero" aria-hidden="true"></div>
+  <button class="hero-enter" id="enterShelf" type="button">Explore the archive <span aria-hidden="true">↓</span></button>
 </section>
-<nav>
+<nav id="archive-nav">
   <button data-v="albums" class="on">Albums</button>
   <button data-v="artists">Artists</button>
   <button data-v="insights">Insights</button>
@@ -191,19 +180,32 @@ footer { padding: 22px 40px 44px; border-top: 1px solid var(--line); }
   <div class="shelf hidden" id="shelf"></div>
   <div class="panels hidden" id="insights"></div>
 </main>
-<footer class="smallcaps">Spotify library export · artwork & 30s previews via iTunes · artist photos via Deezer · hover to listen · click for buy links</footer>
+<footer class="archive-footer">
+  <div>
+    <div class="smallcaps">Hriday Nagu’s listening archive</div>
+    <h1>The Shelf <em>— a music archive</em></h1>
+    <div class="meta smallcaps" id="meta"></div>
+  </div>
+  <div class="footer-bottom smallcaps">
+    <p>Spotify library export · artwork &amp; 30s previews via iTunes · artist photos via Deezer · hover to listen · click for buy links</p>
+    <a href="#top">Return to the stream ↑</a>
+  </div>
+</footer>
 <script>
 const ALBUMS = __ALBUMS__, ARTISTS = __ARTISTS__, STATS = __STATS__;
 const $ = s => document.querySelector(s);
 
 // theme
 const rootEl = document.documentElement, themeBtn = $('#themeBtn');
-function setTheme(t) { rootEl.dataset.theme = t; themeBtn.textContent = t === 'dark' ? '☀' : '☾';
+function setTheme(t) { rootEl.dataset.theme = t; const to = t === 'dark' ? 'light' : 'dark';
+  themeBtn.textContent = t === 'dark' ? '☀' : '☾'; themeBtn.title = `Switch to ${to} mode`; themeBtn.setAttribute('aria-label', `Switch to ${to} mode`);
   try { localStorage.setItem('shelf-theme', t); } catch(e){} }
 let savedTheme = 'dark';
 try { savedTheme = localStorage.getItem('shelf-theme') || 'dark'; } catch(e){}
 setTheme(savedTheme);
 themeBtn.onclick = () => setTheme(rootEl.dataset.theme === 'dark' ? 'light' : 'dark');
+const enterShelf = $('#enterShelf'), archiveNav = $('#archive-nav');
+enterShelf.addEventListener('click', () => archiveNav.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }));
 
 document.getElementById('meta').innerHTML =
   `<span>${STATS.albums} albums</span><span>${STATS.artists} artists</span><span>${STATS.liked} liked tracks</span><span>${STATS.hours} h / last 12 mo</span>`;
