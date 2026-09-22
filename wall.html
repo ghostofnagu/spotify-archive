@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>The Shelf — Hriday's Music Archive</title>
+<title>Permanent Record — Your Listening Life</title>
 <style>
 :root, [data-theme="light"] { color-scheme: light;
-  --bg:#e9e7e2; --panel:#f4f2ee; --ink:#141412; --dim:#7c7a72; --line:#d4d1c9;
+  --bg:#e9e7e2; --panel:#f4f2ee; --hero-bg:#f4f2ee; --hero-edge:rgba(233,231,226,.62); --ink:#141412; --dim:#7c7a72; --line:#d4d1c9;
   --acc:#1db954; --chip:#fff; --gloss:rgba(255,255,255,.32); --shadow:rgba(20,20,18,.16); --shadow2:rgba(20,20,18,.30); }
 [data-theme="dark"] { color-scheme: dark;
-  --bg:#0d0d0f; --panel:#16161a; --ink:#ececec; --dim:#85858c; --line:#232327;
+  --bg:#0d0d0f; --panel:#16161a; --hero-bg:#000; --hero-edge:rgba(0,0,0,.98); --ink:#ececec; --dim:#85858c; --line:#232327;
   --acc:#1db954; --chip:#1c1c21; --gloss:rgba(255,255,255,.14); --shadow:rgba(0,0,0,.5); --shadow2:rgba(0,0,0,.7); }
 * { box-sizing: border-box; margin: 0; }
 html { scroll-behavior: smooth; }
@@ -27,9 +27,9 @@ body { background: var(--bg); color: var(--ink); transition: background .4s, col
 
 /* hero: restored exactly to the original corridor composition */
 .hero { position: relative; isolation: isolate; min-height: min(640px, 58vw); margin: 22px 0 8px; overflow: hidden;
-  background: var(--panel); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  background: var(--hero-bg); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .hero::before { content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
-  background: radial-gradient(ellipse 52% 54% at 50% 51%, transparent 0 45%, color-mix(in srgb, var(--bg) 54%, transparent) 100%); }
+  background: radial-gradient(ellipse 52% 54% at 50% 51%, transparent 0 45%, var(--hero-edge) 100%); }
 .hero-copy { position: relative; z-index: 3; width: min(520px, calc(100% - 48px)); margin: 0 auto; padding-top: clamp(54px, 8vw, 102px); text-align: center; pointer-events: none; }
 .hero-copy h2 { max-width: 500px; margin: 8px auto 0; color: var(--ink); font-size: clamp(40px, 5.8vw, 78px); line-height: .91; letter-spacing: -.065em; }
 .hero-copy p:last-child { max-width: 300px; margin: 18px auto 0; color: var(--dim); font-size: 13px; line-height: 1.38; }
@@ -143,11 +143,11 @@ footer.archive-footer { padding:clamp(48px,8vw,112px) 40px 42px; border-top:1px 
 </head>
 <body id="top">
 <button id="themeBtn" title="Toggle theme" aria-label="Toggle dark mode">☾</button>
-<section class="hero" aria-label="A moving stream of album artwork">
+<section class="hero" aria-label="A moving stream of artist portraits">
   <div class="hero-copy">
-    <div class="smallcaps">Every album, within reach</div>
+    <div class="smallcaps">Permanent Record</div>
     <h2>A life in record.</h2>
-    <p>The music that stayed with you, streaming through one personal shelf.</p>
+    <p>The music that stays with you, held in one enduring record.</p>
   </div>
   <div class="hero-stage" id="hero" aria-hidden="true"></div>
 </section>
@@ -156,7 +156,7 @@ footer.archive-footer { padding:clamp(48px,8vw,112px) 40px 42px; border-top:1px 
   <button data-v="albums" class="on">Albums</button>
   <button data-v="artists">Artists</button>
   <button data-v="insights">Insights</button>
-  <input type="search" id="q" placeholder="Search the shelf…" autocomplete="off">
+  <input type="search" id="q" placeholder="Search your record…" autocomplete="off">
   <select id="sort"></select>
   <label><input type="checkbox" id="savedOnly"> saved only</label>
   <label><input type="checkbox" id="artOnly" checked> with artwork</label>
@@ -168,11 +168,11 @@ footer.archive-footer { padding:clamp(48px,8vw,112px) 40px 42px; border-top:1px 
 </main>
 <footer class="archive-footer">
   <div>
-    <div class="smallcaps">Hriday Nagu’s listening archive</div>
-    <h1>The Shelf <em>— a music archive</em></h1>
+    <div class="smallcaps">A personal listening archive</div>
+    <h1>Permanent Record <em>— your listening life, kept</em></h1>
   </div>
   <div class="footer-bottom smallcaps">
-    <p>Spotify library export · artwork &amp; 30s previews via iTunes · artist photos via Deezer · hover to listen · click for buy links</p>
+    <p>Artwork, artist portraits, listening history and previews · hover to listen · click to find a release</p>
     <a href="#top">Return to the stream ↑</a>
   </div>
 </footer>
