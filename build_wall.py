@@ -47,30 +47,36 @@ body { background: var(--bg); color: var(--ink); transition: background .4s, col
   color:var(--ink); border-radius:999px; width:46px; height:46px; font-size:18px; cursor:pointer; backdrop-filter:blur(12px);
   transition:transform .3s, background .3s, border-color .3s; }
 #themeBtn:hover { transform:rotate(40deg) scale(1.08); border-color:var(--acc); }
-#themeBtn:focus-visible,.hero-enter:focus-visible { outline:2px solid var(--acc); outline-offset:4px; }
+#themeBtn:focus-visible { outline:2px solid var(--acc); outline-offset:4px; }
 @media (max-width:700px) { #themeBtn { top:18px; right:18px; width:44px; height:44px; } }
 
-/* hero: the archive begins before any interface */
-.hero { position:relative; isolation:isolate; min-height:min(760px,100svh); margin:0; overflow:hidden;
-  background:var(--panel); border-bottom:1px solid var(--line); }
+/* hero: restored exactly to the original corridor composition */
+.hero { position: relative; isolation: isolate; min-height: min(640px, 58vw); margin: 22px 0 8px; overflow: hidden;
+  background: var(--panel); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .hero::before { content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
-  background:radial-gradient(ellipse 54% 58% at 50% 52%, transparent 0 42%, color-mix(in srgb,var(--bg) 68%,transparent) 100%); }
-.hero::after { content:""; position:absolute; z-index:2; left:0; right:0; bottom:0; height:24%; pointer-events:none;
-  background:linear-gradient(to top,var(--panel),transparent); }
-.hero-stage { position:absolute; z-index:1; inset:0; container-type:inline-size; perspective:30cqw; perspective-origin:50% 55%; pointer-events:none; }
+  background: radial-gradient(ellipse 52% 54% at 50% 51%, transparent 0 45%, color-mix(in srgb, var(--bg) 54%, transparent) 100%); }
+.hero-copy { position: relative; z-index: 3; width: min(520px, calc(100% - 48px)); margin: 0 auto; padding-top: clamp(54px, 8vw, 102px); text-align: center; pointer-events: none; }
+.hero-copy h2 { max-width: 500px; margin: 8px auto 0; color: var(--ink); font-size: clamp(40px, 5.8vw, 78px); line-height: .91; letter-spacing: -.065em; }
+.hero-copy p:last-child { max-width: 300px; margin: 18px auto 0; color: var(--dim); font-size: 13px; line-height: 1.38; }
+.hero-stage { position:absolute; z-index:1; inset:0; container-type: inline-size; perspective:30cqw; perspective-origin:50% 55%; pointer-events:none; }
 .hero-stage > div { position:absolute; inset:0; transform-style:preserve-3d; }
 .stream-card { position:absolute; left:50%; top:55%; width:18cqw; height:25cqw; margin-left:-9cqw; margin-top:-12.5cqw; overflow:hidden;
-  border-radius:.4cqw; background:var(--line); box-shadow:0 20px 38px var(--shadow2),0 4px 11px var(--shadow); backface-visibility:hidden; will-change:transform; }
+  border-radius:.4cqw; background:var(--line); box-shadow:0 20px 38px var(--shadow2), 0 4px 11px var(--shadow); backface-visibility:hidden; will-change:transform; }
 .stream-card::before { content:""; position:absolute; z-index:2; inset:0; pointer-events:none;
   background:linear-gradient(108deg,var(--gloss) 0%,rgba(255,255,255,.05) 22%,transparent 43%),linear-gradient(to right,rgba(0,0,0,.33),transparent 5px); }
 .stream-card img { width:100%; height:100%; display:block; object-fit:cover; }
 .hero:hover .stream-card { animation-play-state:paused; }
-.hero-enter { position:absolute; z-index:4; left:50%; bottom:34px; transform:translateX(-50%); display:inline-flex; align-items:center; gap:10px; padding:8px 12px;
-  border:0; background:transparent; color:var(--ink); font:10px/1 "Helvetica Neue",Helvetica,Arial,sans-serif; letter-spacing:.15em; text-transform:uppercase; cursor:pointer; }
-.hero-enter span { display:inline-grid; place-items:center; width:24px; height:24px; border:1px solid var(--line); border-radius:50%; font-size:15px; line-height:1; transition:transform .25s,background .25s; }
-.hero-enter:hover span { transform:translateY(4px); background:var(--ink); color:var(--panel); }
-@media (max-width:700px) { .hero { min-height:100svh; } .hero-enter { bottom:22px; } }
+@media (max-width:700px) {
+  .hero { min-height: 610px; }
+  .hero-copy { padding-top: 48px; width: min(340px, calc(100% - 32px)); }
+  .hero-copy h2 { font-size: clamp(42px, 13vw, 62px); }
+  .hero-copy p:last-child { margin-top: 15px; }
+}
 @media (prefers-reduced-motion:reduce) { .stream-card { animation-play-state:paused !important; } }
+
+.collection-meta { padding:20px 40px 8px; border-bottom:1px solid var(--line); background:var(--bg); }
+.collection-meta .meta { display:flex; gap:16px 34px; flex-wrap:wrap; }
+@media (max-width:700px) { .collection-meta { padding:18px 22px 8px; } .collection-meta .meta { gap:10px 22px; } }
 
 nav { position: sticky; top: 0; z-index: 10; display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
   padding: 12px 40px; background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(12px);
@@ -163,9 +169,14 @@ footer.archive-footer { padding:clamp(48px,8vw,112px) 40px 42px; border-top:1px 
 <body id="top">
 <button id="themeBtn" title="Toggle theme" aria-label="Toggle dark mode">☾</button>
 <section class="hero" aria-label="A moving stream of album artwork">
+  <div class="hero-copy">
+    <div class="smallcaps">Every album, within reach</div>
+    <h2>A life in records.</h2>
+    <p>The music that stayed with you, streaming through one personal shelf.</p>
+  </div>
   <div class="hero-stage" id="hero" aria-hidden="true"></div>
-  <button class="hero-enter" id="enterShelf" type="button">Explore the archive <span aria-hidden="true">↓</span></button>
 </section>
+<div class="collection-meta" aria-label="Archive statistics"><div class="meta smallcaps" id="meta"></div></div>
 <nav id="archive-nav">
   <button data-v="albums" class="on">Albums</button>
   <button data-v="artists">Artists</button>
@@ -184,7 +195,6 @@ footer.archive-footer { padding:clamp(48px,8vw,112px) 40px 42px; border-top:1px 
   <div>
     <div class="smallcaps">Hriday Nagu’s listening archive</div>
     <h1>The Shelf <em>— a music archive</em></h1>
-    <div class="meta smallcaps" id="meta"></div>
   </div>
   <div class="footer-bottom smallcaps">
     <p>Spotify library export · artwork &amp; 30s previews via iTunes · artist photos via Deezer · hover to listen · click for buy links</p>
@@ -204,14 +214,12 @@ let savedTheme = 'dark';
 try { savedTheme = localStorage.getItem('shelf-theme') || 'dark'; } catch(e){}
 setTheme(savedTheme);
 themeBtn.onclick = () => setTheme(rootEl.dataset.theme === 'dark' ? 'light' : 'dark');
-const enterShelf = $('#enterShelf'), archiveNav = $('#archive-nav');
-enterShelf.addEventListener('click', () => archiveNav.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }));
 
 document.getElementById('meta').innerHTML =
   `<span>${STATS.albums} albums</span><span>${STATS.artists} artists</span><span>${STATS.liked} liked tracks</span><span>${STATS.hours} h / last 12 mo</span>`;
 
-// hero: exact corridor geometry from the supplied ImageStreamHero, applied to archive artwork
-const heroItems = ALBUMS.filter(a => a.art).sort((a,b) => b.lt - a.lt).slice(0, 36);
+// hero: the two rails use independent actual artist portraits from the existing archive data
+const heroArtists = ARTISTS.filter(a => a.img).sort((a,b) => b.plays - a.plays || b.liked_tracks - a.liked_tracks || a.name.localeCompare(b.name));
 const hero = document.getElementById('hero');
 const PATH = { perspective:30, cardWidth:18, cardHeight:25, cardRadius:.4, birthHeight:2.6, exitHeight:46, railBirth:-11, railExit:44, fan:3.3, turnBirth:6, turnExit:28, stops:24 };
 const streamCards = 9;
@@ -235,14 +243,15 @@ const streamStyle = document.createElement('style');
 streamStyle.textContent = corridorKeyframes(1, streamRight, PATH) + corridorKeyframes(-1, streamLeft, PATH);
 document.head.appendChild(streamStyle);
 const streamPlane = document.createElement('div');
-for (const name of [streamRight, streamLeft]) {
+for (const [railIndex, name] of [streamRight, streamLeft].entries()) {
   for (let i = 0; i < streamCards; i++) {
-    const album = heroItems[i % heroItems.length];
+    const artist = heroArtists[(i * (railIndex ? 7 : 11) + railIndex * 17) % heroArtists.length];
     const el = document.createElement('div');
     el.className = 'stream-card';
+    el.dataset.artist = artist.name;
     el.style.animation = `${name} ${streamSpeed}s linear infinite`;
     el.style.animationDelay = `${-(i * streamSpeed) / streamCards}s`;
-    el.innerHTML = `<img loading="eager" src="${album.art}" alt="">`;
+    el.innerHTML = `<img loading="eager" src="${artist.img}" alt="">`;
     streamPlane.appendChild(el);
   }
 }
