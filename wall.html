@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Permanent Record — Your Listening Life</title>
+<title>Permanent Record — Made Yours</title>
 <style>
 :root, [data-theme="light"] { color-scheme: light;
   --bg:#e9e7e2; --panel:#f4f2ee; --hero-bg:#f4f2ee; --hero-edge:rgba(233,231,226,.62); --ink:#141412; --dim:#7c7a72; --line:#d4d1c9;
@@ -32,7 +32,7 @@ body { background: var(--bg); color: var(--ink); transition: background .4s, col
   background: radial-gradient(ellipse 52% 54% at 50% 51%, transparent 0 45%, var(--hero-edge) 100%); }
 .hero-copy { position: relative; z-index: 3; width: min(520px, calc(100% - 48px)); margin: 0 auto; padding-top: clamp(54px, 8vw, 102px); text-align: center; pointer-events: none; }
 .hero-copy h2 { max-width: 500px; margin: 8px auto 0; color: var(--ink); font-size: clamp(40px, 5.8vw, 78px); line-height: .91; letter-spacing: -.065em; }
-.hero-copy p:last-child { max-width: 300px; margin: 18px auto 0; color: var(--dim); font-size: 13px; line-height: 1.38; }
+.hero-caption { position:absolute; z-index:3; left:50%; bottom:clamp(24px, 4vw, 52px); width:min(320px, calc(100% - 48px)); transform:translateX(-50%); margin:0; text-align:center; color:var(--dim); font-size:13px; line-height:1.38; pointer-events:none; }
 .hero-stage { position:absolute; z-index:1; inset:0; overflow:hidden; container-type: inline-size; perspective:30cqw; perspective-origin:50% 55%; pointer-events:none; transform:translateZ(0); }
 .hero-stage > div { position:absolute; inset:0; transform-style:preserve-3d; }
 .stream-card { position:absolute; left:50%; top:55%; width:18cqw; height:25cqw; margin-left:-9cqw; margin-top:-12.5cqw; overflow:hidden;
@@ -45,7 +45,7 @@ body { background: var(--bg); color: var(--ink); transition: background .4s, col
   .hero { min-height: 610px; }
   .hero-copy { padding-top: 48px; width: min(340px, calc(100% - 32px)); }
   .hero-copy h2 { font-size: clamp(42px, 13vw, 62px); }
-  .hero-copy p:last-child { margin-top: 15px; }
+  .hero-caption { bottom:28px; width:min(290px, calc(100% - 32px)); }
 }
 @media (prefers-reduced-motion:reduce) { .stream-card { animation-play-state:paused !important; } }
 
@@ -146,10 +146,10 @@ footer.archive-footer { padding:clamp(48px,8vw,112px) 40px 42px; border-top:1px 
 <section class="hero" aria-label="A moving stream of artist portraits">
   <div class="hero-copy">
     <div class="smallcaps">Permanent Record</div>
-    <h2>A life in record.</h2>
-    <p>The music that stays with you, held in one enduring record.</p>
+    <h2>What you love.<br>Made yours.</h2>
   </div>
   <div class="hero-stage" id="hero" aria-hidden="true"></div>
+  <p class="hero-caption">The music that stayed with you, streaming through one personal shelf.</p>
 </section>
 <div class="collection-meta" aria-label="Archive statistics"><div class="meta smallcaps" id="meta"></div></div>
 <nav id="archive-nav">
@@ -168,11 +168,11 @@ footer.archive-footer { padding:clamp(48px,8vw,112px) 40px 42px; border-top:1px 
 </main>
 <footer class="archive-footer">
   <div>
-    <div class="smallcaps">A personal listening archive</div>
-    <h1>Permanent Record <em>— your listening life, kept</em></h1>
+    <div class="smallcaps">Permanent Record</div>
+    <h1>Listening is personal. <em>Ownership should be too.</em></h1>
   </div>
   <div class="footer-bottom smallcaps">
-    <p>Artwork, artist portraits, listening history and previews · hover to listen · click to find a release</p>
+    <p>Your listening life, gathered in one place · preview what stayed · find a release to keep</p>
     <a href="#top">Return to the stream ↑</a>
   </div>
 </footer>
