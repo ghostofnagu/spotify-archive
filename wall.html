@@ -18,12 +18,13 @@ body { background: var(--bg); color: var(--ink); transition: background .4s, col
   font: 14px/1.45 "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
 .smallcaps { font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); }
 
-#themeBtn { position:fixed; top:28px; right:32px; z-index:30; background:color-mix(in srgb, var(--panel) 88%, transparent); border:1px solid var(--line);
-  color:var(--ink); border-radius:999px; width:46px; height:46px; font-size:18px; cursor:pointer; backdrop-filter:blur(12px);
-  transition:transform .3s, background .3s, border-color .3s; }
-#themeBtn:hover { transform:rotate(40deg) scale(1.08); border-color:var(--acc); }
-#themeBtn:focus-visible { outline:2px solid var(--acc); outline-offset:4px; }
-@media (max-width:700px) { #themeBtn { top:18px; right:18px; width:44px; height:44px; } }
+#themeBtn { position:fixed; top:24px; right:26px; z-index:30; display:grid; place-items:center; width:36px; height:36px; padding:0;
+  background:transparent; border:0; color:var(--dim); border-radius:999px; cursor:pointer;
+  transition:color .2s ease, background .2s ease; }
+#themeBtn svg { width:15px; height:15px; fill:none; stroke:currentColor; stroke-linecap:round; stroke-linejoin:round; stroke-width:1.55; }
+#themeBtn:hover { color:var(--ink); background:color-mix(in srgb, var(--panel) 58%, transparent); }
+#themeBtn:focus-visible { outline:1px solid var(--ink); outline-offset:3px; }
+@media (max-width:700px) { #themeBtn { top:13px; right:14px; width:36px; height:36px; } }
 
 /* hero: restored exactly to the original corridor composition */
 .hero { position: relative; isolation: isolate; min-height: min(640px, 58vw); margin: 22px 0 8px; overflow: hidden;
@@ -142,7 +143,7 @@ footer.archive-footer { padding:clamp(48px,8vw,112px) 40px 42px; border-top:1px 
 </style>
 </head>
 <body id="top">
-<button id="themeBtn" title="Toggle theme" aria-label="Toggle dark mode">☾</button>
+<button id="themeBtn" title="Toggle theme" aria-label="Toggle dark mode"></button>
 <section class="hero" aria-label="A moving stream of artist portraits">
   <div class="hero-copy">
     <div class="smallcaps">© Permanent Record</div>
@@ -182,8 +183,10 @@ const $ = s => document.querySelector(s);
 
 // theme
 const rootEl = document.documentElement, themeBtn = $('#themeBtn');
+const sunIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.25"/><path d="M12 2.5v2.1M12 19.4v2.1M21.5 12h-2.1M4.6 12H2.5M18.72 5.28l-1.49 1.49M6.77 17.23l-1.49 1.49M18.72 18.72l-1.49-1.49M6.77 6.77 5.28 5.28"/></svg>';
+const moonIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.3 15.35A8.75 8.75 0 0 1 8.65 3.7 8.75 8.75 0 1 0 20.3 15.35Z"/></svg>';
 function setTheme(t) { rootEl.dataset.theme = t; const to = t === 'dark' ? 'light' : 'dark';
-  themeBtn.textContent = t === 'dark' ? '☀' : '☾'; themeBtn.title = `Switch to ${to} mode`; themeBtn.setAttribute('aria-label', `Switch to ${to} mode`);
+  themeBtn.innerHTML = t === 'dark' ? sunIcon : moonIcon; themeBtn.title = `Switch to ${to} mode`; themeBtn.setAttribute('aria-label', `Switch to ${to} mode`);
   try { localStorage.setItem('shelf-theme', t); } catch(e){} }
 let savedTheme = 'dark';
 try { savedTheme = localStorage.getItem('shelf-theme') || 'dark'; } catch(e){}
