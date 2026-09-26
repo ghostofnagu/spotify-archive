@@ -18,16 +18,16 @@ body { background: var(--bg); color: var(--ink); transition: background .4s, col
   font: 14px/1.45 "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
 .smallcaps { font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); }
 
-#themeBtn { position:fixed; top:24px; right:26px; z-index:30; display:grid; place-items:center; width:36px; height:36px; padding:0;
+#themeBtn { position:fixed; top:14px; right:26px; z-index:30; display:grid; place-items:center; width:36px; height:36px; padding:0;
   background:transparent; border:0; color:var(--dim); border-radius:999px; cursor:pointer;
   transition:color .2s ease, background .2s ease; }
 #themeBtn svg { width:15px; height:15px; fill:none; stroke:currentColor; stroke-linecap:round; stroke-linejoin:round; stroke-width:1.55; }
 #themeBtn:hover { color:var(--ink); background:color-mix(in srgb, var(--panel) 58%, transparent); }
 #themeBtn:focus-visible { outline:1px solid var(--ink); outline-offset:3px; }
-@media (max-width:700px) { #themeBtn { top:13px; right:14px; width:36px; height:36px; } }
+@media (max-width:700px) { #themeBtn { top:7px; right:14px; width:36px; height:36px; } }
 
 /* hero: restored exactly to the original corridor composition */
-.hero { position: relative; isolation: isolate; min-height: min(640px, 58vw); margin: 22px 0 8px; overflow: hidden;
+.hero { position: relative; isolation: isolate; min-height: min(640px, 58vw); margin: 0 0 8px; overflow: hidden;
   background: var(--hero-bg); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .hero::before { content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
   background: radial-gradient(ellipse 52% 54% at 50% 51%, transparent 0 45%, var(--hero-edge) 100%); }
