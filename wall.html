@@ -19,20 +19,19 @@ body { background: var(--bg); color: var(--ink); transition: background .4s, col
   font: 14px/1.45 "General Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
 .smallcaps { font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); }
 
-#themeBtn { display:grid; place-items:center; width:36px; height:36px; padding:0;
+#themeBtn { display:grid; place-items:center; width:32px; height:32px; padding:0;
   background:transparent; border:0; color:var(--dim); border-radius:999px; cursor:pointer;
   transition:color .2s ease, background .2s ease; }
 #themeBtn svg { width:15px; height:15px; fill:none; stroke:currentColor; stroke-linecap:round; stroke-linejoin:round; stroke-width:1.55; }
 #themeBtn:hover { color:var(--ink); background:color-mix(in srgb, var(--panel) 58%, transparent); }
 #themeBtn:focus-visible { outline:1px solid var(--ink); outline-offset:3px; }
 
-.site-header { position:absolute; inset:14px 26px auto; z-index:30; display:flex; align-items:center; justify-content:space-between; pointer-events:none; }
-.site-brand, .site-action, .site-tools { pointer-events:auto; }
-.site-brand { color:var(--ink); font-size:12px; font-weight:600; letter-spacing:-.02em; text-decoration:none; }
+.site-header { position:absolute; inset:14px 26px auto; z-index:30; display:flex; align-items:center; justify-content:flex-end; pointer-events:none; }
+.site-action, .site-tools { pointer-events:auto; }
 .site-tools { display:flex; align-items:center; gap:4px; }
-.site-action { display:inline-flex; align-items:center; min-height:36px; padding:0 14px; border-radius:999px; background:var(--ink); color:var(--bg); font-size:12px; font-weight:600; letter-spacing:-.02em; text-decoration:none; transition:transform .2s ease, opacity .2s ease; }
-.site-action:hover { transform:translateY(-1px); opacity:.9; }
-@media (max-width:700px) { .site-header { inset:7px 14px auto; } #themeBtn { width:36px; height:36px; } .site-action { padding:0 12px; } }
+.site-action { display:inline-flex; align-items:center; min-height:32px; padding:0 10px; border:1px solid var(--line); border-radius:999px; color:var(--dim); font-size:11px; font-weight:600; letter-spacing:-.02em; text-decoration:none; transition:color .2s ease, background .2s ease; }
+.site-action:hover { color:var(--ink); background:color-mix(in srgb, var(--panel) 68%, transparent); }
+@media (max-width:700px) { .site-header { inset:7px 14px auto; } #themeBtn { width:32px; height:32px; } .site-action { padding:0 10px; } }
 
 /* hero: restored exactly to the original corridor composition */
 .hero { position: relative; isolation: isolate; min-height: min(640px, 58vw); margin: 0 0 8px; overflow: hidden;
@@ -152,10 +151,9 @@ footer.archive-footer { padding:clamp(48px,8vw,112px) 40px 42px; border-top:1px 
 </head>
 <body id="top">
 <header class="site-header" aria-label="Permanent Record">
-  <a class="site-brand" href="#top">Permanent Record</a>
   <div class="site-tools">
     <button id="themeBtn" title="Toggle theme" aria-label="Toggle dark mode"></button>
-    <a class="site-action" href="#archive-nav">Browse Library</a>
+    <a class="site-action" href="#archive-nav">Library</a>
   </div>
 </header>
 <section class="hero" aria-label="A moving stream of artist portraits">
