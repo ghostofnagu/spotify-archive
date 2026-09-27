@@ -38,9 +38,9 @@ body { background: var(--bg); color: var(--ink); transition: background .4s, col
   background: var(--hero-bg); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .hero::before { content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
   background: radial-gradient(ellipse 52% 54% at 50% 51%, transparent 0 45%, var(--hero-edge) 100%); }
-.hero-copy { position: relative; z-index: 3; width: min(520px, calc(100% - 48px)); margin: 0 auto; padding-top: clamp(54px, 8vw, 102px); text-align: center; pointer-events: none; }
+.hero-copy { position: relative; z-index: 3; width: min(520px, calc(100% - 48px)); margin: 0 auto; padding-top: clamp(48px, 7vw, 86px); text-align: center; pointer-events: none; }
 .hero-copy h2 { max-width: 500px; margin: 8px auto 0; color: var(--ink); font-size: clamp(40px, 5.8vw, 78px); line-height: .91; letter-spacing: -.065em; }
-.hero-caption { position:absolute; z-index:3; left:50%; bottom:clamp(24px, 4vw, 52px); width:min(320px, calc(100% - 48px)); transform:translateX(-50%); margin:0; text-align:center; color:var(--dim); font-size:13px; line-height:1.38; pointer-events:none; }
+.hero-caption { position:absolute; z-index:3; left:50%; bottom:clamp(18px, 2.7vw, 36px); width:min(320px, calc(100% - 48px)); transform:translateX(-50%); margin:0; text-align:center; color:var(--dim); font-size:13px; line-height:1.38; pointer-events:none; }
 .hero-stage { position:absolute; z-index:1; inset:0; overflow:hidden; container-type: inline-size; perspective:30cqw; perspective-origin:50% 55%; pointer-events:none; transform:translateZ(0); }
 .hero-stage > div { position:absolute; inset:0; transform-style:preserve-3d; }
 .stream-card { position:absolute; left:50%; top:55%; width:18cqw; height:25cqw; margin-left:-9cqw; margin-top:-12.5cqw; overflow:hidden;
@@ -51,9 +51,9 @@ body { background: var(--bg); color: var(--ink); transition: background .4s, col
 .hero:hover .stream-card { animation-play-state:paused; }
 @media (max-width:700px) {
   .hero { min-height: 610px; }
-  .hero-copy { padding-top: 48px; width: min(340px, calc(100% - 32px)); }
+  .hero-copy { padding-top: 64px; width: min(340px, calc(100% - 32px)); }
   .hero-copy h2 { font-size: clamp(42px, 13vw, 62px); }
-  .hero-caption { bottom:28px; width:min(290px, calc(100% - 32px)); }
+  .hero-caption { bottom:46px; width:min(290px, calc(100% - 32px)); }
 }
 @media (prefers-reduced-motion:reduce) { .stream-card { animation-play-state:paused !important; } }
 
