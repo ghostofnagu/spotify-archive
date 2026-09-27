@@ -212,8 +212,16 @@ try { savedTheme = localStorage.getItem('shelf-theme') || 'dark'; } catch(e){}
 setTheme(savedTheme);
 themeBtn.onclick = () => setTheme(rootEl.dataset.theme === 'dark' ? 'light' : 'dark');
 
-// hero: the two rails use independent actual artist portraits from the existing archive data
+// hero: own these visual assets locally so the archive does not depend on a third-party image CDN
 const heroArtists = ARTISTS.filter(a => a.img).sort((a,b) => b.plays - a.plays || b.liked_tracks - a.liked_tracks || a.name.localeCompare(b.name));
+const heroArtwork = {
+  'Frank Medley':'hero-assets/frank-medley.jpg', 'SAULT':'hero-assets/sault.jpg', 'Kanye West':'hero-assets/kanye-west.jpg',
+  'Wizkid':'hero-assets/wizkid.jpg', 'letherette':'hero-assets/letherette.jpg', 'Shlohmo':'hero-assets/shlohmo.jpg',
+  'JVCK JAMES':'hero-assets/jvck-james.jpg', 'Tom Misch':'hero-assets/tom-misch.jpg', 'Cousin Kula':'hero-assets/cousin-kula.jpg',
+  'Sweet Whirl':'hero-assets/sweet-whirl.jpg', 'Matthew Halsall':'hero-assets/matthew-halsall.jpg', 'Seb Wildblood':'hero-assets/seb-wildblood.jpg',
+  'SALIMATA':'hero-assets/salimata.jpg', 'Bill Laurance':'hero-assets/bill-laurance.jpg', 'Noni-Mouse':'hero-assets/noni-mouse.jpg',
+  'Loaded Honey':'hero-assets/loaded-honey.jpg', 'Yuuf':'hero-assets/yuuf.jpg'
+};
 const hero = document.getElementById('hero');
 const PATH = { perspective:30, cardWidth:18, cardHeight:25, cardRadius:.4, birthHeight:2.6, exitHeight:46, railBirth:-11, railExit:44, fan:3.3, turnBirth:6, turnExit:28, stops:24 };
 const streamCards = 9;
@@ -245,7 +253,7 @@ for (const [railIndex, name] of [streamRight, streamLeft].entries()) {
     el.dataset.artist = artist.name;
     el.style.animation = `${name} ${streamSpeed}s linear infinite`;
     el.style.animationDelay = `${-(i * streamSpeed) / streamCards}s`;
-    el.innerHTML = `<img loading="eager" src="${artist.img}" alt="">`;
+    el.innerHTML = `<img loading="eager" src="${heroArtwork[artist.name] || artist.img}" alt="">`;
     streamPlane.appendChild(el);
   }
 }
