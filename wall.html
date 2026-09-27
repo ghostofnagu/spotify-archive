@@ -19,19 +19,19 @@ body { background: var(--bg); color: var(--ink); transition: background .4s, col
   font: 14px/1.45 "General Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
 .smallcaps { font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--dim); }
 
-#themeBtn { display:grid; place-items:center; width:32px; height:32px; padding:0;
+#themeBtn, #muteBtn { display:grid; place-items:center; width:32px; height:32px; padding:0;
   background:transparent; border:0; color:var(--dim); border-radius:999px; cursor:pointer;
   transition:color .2s ease, background .2s ease; }
-#themeBtn svg { width:15px; height:15px; fill:none; stroke:currentColor; stroke-linecap:round; stroke-linejoin:round; stroke-width:1.55; }
-#themeBtn:hover { color:var(--ink); background:color-mix(in srgb, var(--panel) 58%, transparent); }
-#themeBtn:focus-visible { outline:1px solid var(--ink); outline-offset:3px; }
+#themeBtn svg, #muteBtn svg { width:15px; height:15px; fill:none; stroke:currentColor; stroke-linecap:round; stroke-linejoin:round; stroke-width:1.55; }
+#themeBtn:hover, #muteBtn:hover { color:var(--ink); background:color-mix(in srgb, var(--panel) 58%, transparent); }
+#themeBtn:focus-visible, #muteBtn:focus-visible { outline:1px solid var(--ink); outline-offset:3px; }
 
 .site-header { position:absolute; inset:14px 26px auto; z-index:30; display:flex; align-items:center; justify-content:flex-end; pointer-events:none; }
 .site-action, .site-tools { pointer-events:auto; }
 .site-tools { display:flex; align-items:center; gap:4px; }
 .site-action { display:inline-flex; align-items:center; min-height:32px; padding:0 10px; border:1px solid var(--line); border-radius:999px; color:var(--dim); font-size:11px; font-weight:600; letter-spacing:-.02em; text-decoration:none; transition:color .2s ease, background .2s ease; }
 .site-action:hover { color:var(--ink); background:color-mix(in srgb, var(--panel) 68%, transparent); }
-@media (max-width:700px) { .site-header { inset:7px 14px auto; } #themeBtn { width:32px; height:32px; } .site-action { padding:0 10px; } }
+@media (max-width:700px) { .site-header { inset:7px 14px auto; } #themeBtn, #muteBtn { width:32px; height:32px; } .site-action { padding:0 10px; } }
 
 /* hero: restored exactly to the original corridor composition */
 .hero { position: relative; isolation: isolate; min-height: min(640px, 58vw); margin: 0 0 8px; overflow: hidden;
@@ -90,6 +90,13 @@ body { background: var(--bg); color: var(--ink); transition: background .4s, col
 .case img { display:block; width:100%; height:100%; aspect-ratio:1; object-fit:cover; opacity:0; transition: opacity .5s, transform .6s; }
 .card:hover .case img, .acard:hover .case img { transform: scale(1.04); }
 .case img.on { opacity: 1; }
+.preview-stop { position:absolute; right:8px; bottom:8px; z-index:4; display:grid; place-items:center; width:30px; height:30px; padding:0;
+  border:1px solid rgba(255,255,255,.34); border-radius:999px; background:rgba(10,10,12,.66); color:#fff; cursor:pointer; opacity:0; pointer-events:none;
+  transform:scale(.84); transition:opacity .18s ease, transform .18s ease, background .18s ease; backdrop-filter:blur(8px); }
+.preview-stop svg { width:11px; height:11px; fill:currentColor; }
+.preview-stop:hover { background:rgba(10,10,12,.9); }
+.card.playing .preview-stop, .acard.playing .preview-stop { opacity:1; pointer-events:auto; transform:scale(1); }
+.preview-stop:focus-visible { outline:2px solid #fff; outline-offset:2px; }
 .noart { position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
   text-align:center; padding:14px; font-size:12px; color:var(--dim); line-height:1.3; }
 .mosaic { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; width: 100%; height: 100%; }
@@ -152,6 +159,7 @@ footer.archive-footer { padding:clamp(48px,8vw,112px) 40px 42px; border-top:1px 
 <body id="top">
 <header class="site-header" aria-label="Permanent Record">
   <div class="site-tools">
+    <button id="muteBtn" title="Mute previews" aria-label="Mute previews"></button>
     <button id="themeBtn" title="Toggle theme" aria-label="Toggle dark mode"></button>
     <a class="site-action" href="#archive-nav">Library</a>
   </div>
@@ -194,7 +202,7 @@ const ALBUMS = [{"a": "Taylor McFerrin", "t": "Early Riser", "s": true, "lt": 12
 const $ = s => document.querySelector(s);
 
 // theme
-const rootEl = document.documentElement, themeBtn = $('#themeBtn');
+const rootEl = document.documentElement, themeBtn = $('#themeBtn'), muteBtn = $('#muteBtn');
 const sunIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.25"/><path d="M12 2.5v2.1M12 19.4v2.1M21.5 12h-2.1M4.6 12H2.5M18.72 5.28l-1.49 1.49M6.77 17.23l-1.49 1.49M18.72 18.72l-1.49-1.49M6.77 6.77 5.28 5.28"/></svg>';
 const moonIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.3 15.35A8.75 8.75 0 0 1 8.65 3.7 8.75 8.75 0 1 0 20.3 15.35Z"/></svg>';
 function setTheme(t) { rootEl.dataset.theme = t; const to = t === 'dark' ? 'light' : 'dark';
@@ -249,6 +257,19 @@ hero.appendChild(streamPlane);
 
 // ---- audio ----
 const audio = new Audio(); audio.preload = 'none';
+const soundOnIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h4l5 4V6L8 10H4Z"/><path d="M16 9.25a4.25 4.25 0 0 1 0 5.5"/><path d="M18.8 6.6a8 8 0 0 1 0 10.8"/></svg>';
+const soundOffIcon = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h4l5 4V6L8 10H4Z"/><path d="m16 10 4 4M20 10l-4 4"/></svg>';
+function setMuted(muted) {
+  audio.muted = muted;
+  muteBtn.innerHTML = muted ? soundOffIcon : soundOnIcon;
+  muteBtn.title = muted ? 'Unmute previews' : 'Mute previews';
+  muteBtn.setAttribute('aria-label', muted ? 'Unmute previews' : 'Mute previews');
+  try { localStorage.setItem('shelf-muted', muted ? 'true' : 'false'); } catch(e){}
+}
+let savedMuted = false;
+try { savedMuted = localStorage.getItem('shelf-muted') === 'true'; } catch(e){}
+setMuted(savedMuted);
+muteBtn.onclick = () => setMuted(!audio.muted);
 let current = null, intent = null, progressTimer = null;
 function stopAll() {
   clearTimeout(intent); intent = null;
@@ -347,6 +368,7 @@ function render() {
                   : `<div class="noart">${esc(r.t)}</div>`}
           <span class="eq"><i></i><i></i><i></i><i></i></span>
           <svg class="ring" viewBox="0 0 22 22"><circle class="bgr" cx="11" cy="11" r="9"/><circle class="fg" cx="11" cy="11" r="9"/></svg>
+          <button class="preview-stop" type="button" aria-label="Stop preview" title="Stop preview"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h10v10H7z"/></svg></button>
         </div>
         <div class="lbl"><b>${esc(r.t)}</b><span class="sub">${esc(r.a)}${r.prev && r.pt ? ' · ▶ ' + esc(r.pt) : ''}</span></div>
         ${buyLinks(r.a, r.t, r.url)}
@@ -373,6 +395,7 @@ function render() {
         <div class="case">${mosaic}
           <span class="eq"><i></i><i></i><i></i><i></i></span>
           <svg class="ring" viewBox="0 0 22 22"><circle class="bgr" cx="11" cy="11" r="9"/><circle class="fg" cx="11" cy="11" r="9"/></svg>
+          <button class="preview-stop" type="button" aria-label="Stop preview" title="Stop preview"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h10v10H7z"/></svg></button>
         </div>
         <div class="lbl"><b>${esc(r.name)}</b>
           ${r.g ? `<span class="g">${esc(r.g)}</span>` : ''}
@@ -407,6 +430,7 @@ function bindPreview(el) {
     if (c && !c.contains(e.relatedTarget)) stopAll();
   });
   el.addEventListener('click', e => {
+    if (e.target.closest('.preview-stop')) { stopAll(); return; }
     if (e.target.closest('a')) return;
     const c = e.target.closest('.card, .acard'); if (!c) return;
     if (matchMedia('(hover: none)').matches && c.dataset.prev && c !== current && !c.classList.contains('sel')) {
